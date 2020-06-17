@@ -1,0 +1,130 @@
+// Alineación de Celda
+ALIGN_NULL       0
+ALIGN_LEFT       1
+ALIGN_CENTER     2
+ALIGN_RIGHT      3
+ALIGN_FILL       4
+
+// Bordes de Celda
+BORDER_NONE      0
+BORDER_LEFT      8
+BORDER_RIGHT    16
+BORDER_TOP      32
+BORDER_BOTTOM   64
+BORDER_ALL     120
+
+//Pictures para formatos de celda
+'0'
+'0.00'
+'#,##0'
+'#,##0.00'
+'0%'
+'0.00%'
+'0.00E+00'
+'dd/mm/yy'
+'dd\-mmm\-yy'
+'dd\-mmm'
+'mmm\-yy'
+'h:mm\ a.m./p.m.'
+'h:mm:ss\ a.m./p.m.'
+'h:mm'
+'h:mm:ss'
+'dd/mm/yy\ h:mm'
+'mm:ss'
+
+///////-----------------------------------------------------------------------------------------
+
+Sintaxis:
+---------
+
+DEFINE XLS FORMAT nFormat PICTURE <cPicture>
+
+DEFINE XLS FONT   nFont NAME <cname> [HEIGHT <nheight>] [ITALIC] [BOLD] [UNDERLINE] [STRIKEOUT]
+
+XLS <oXLS> FILE <coutput_file> [ITERATIONS <nIterations>] [NOAUTOMATIC] [PROTECT] [AUTOEXEC]
+
+XLS ROW <nRow> HEIGHT <nHeight> OF oXLS
+
+XLS COL <nFirstCol> [TO <nLastCol>] WIDTH <nWidth> OF oXLS
+
+@<Row>,<Col> XLS SAY <uVal>  OF oXls;
+	[FONT <nFont>];
+	[FORMAT <nFormat>];
+	[SHADED];
+	[BORDER [<nBorder>] ];
+	[ALIGNAMENT <nAlignament>]
+
+@<Row>,<Col> XLS FORMULA <Formula> OF oXls;
+	[VAL <nVal>]
+	[NORECALCULATE]
+	[FONT <nFont> ];
+	[FORMAT <nFormat>];
+	[SHADED];
+	[BORDER [<nBorder>];
+	[ALIGNAMENT <nAlignament>]
+
+/Para que las fórmulas puedan procesar variables de Clipper en tiempo de creación de la xls, las
+mismas deben declararse publicas.
+/Para no confundir al preprocesador las fórmulas no deben comenzar con paréntesis, se recomienda
+comenzarlas con el signo "+". Ej: FORMULA +( _CELL(3,4) + _CELL(3,5) ) * 2
+
+XLS PAGE [BREAK] [HORIZONTAL] [VERTICAL] AT <aBreaks,...> OF oXLS
+
+SET XLS TO DISPLAY ;
+	[FROM <nTop>, <nLeft> TO <nBottom>, <nRight> ];
+	[HIDDEN];
+	[FORMULAS];
+	[NOGRIDLINES];
+	[NOHEADERS];
+	[NOZERO];
+	OF oXLS
+
+SET XLS TO PRINTER ;
+	HEADER <cHeader> ;  	    //ejemplo: "&ZFecha: &F&CTraspaso DBF a Hoja XLS&DPágina Nº &P" ;
+        FOOTER <cFooter> ;
+	LEFT MARGIN <nRight> ; 		//pulgadas
+  	RIGHT MARGIN <nLeft> ; 		//pulgadas
+        TOP MARGIN <nTop> ; 		//pulgadas
+        BOTTOM MARGIN <nBottom> ;	//pulgadas
+        LEFT MARGIN 0 ;
+        OF oFileXLS
+
+
+ENDXLS oXLS
+
+
+//////-------------------------------------------------------------------------------------------
+
+Funciones soportadas por XLS
+
+
+* Funct. cells
+
+  _CELL( nRow, nCol [, lAbsRefRow] [, lAbsRefCol] )
+
+  _SUM( nIniRow, nIniCol, nEndRow, nEndCol [, lAbsRefIniRow ] [, lAbsRefIniCol ] [, lAbsRefEndRow ] [, lAbsRefEndCol] )
+  _MULT( nIniRow, nIniCol, nEndRow, nEndCol [, lAbsRefIniRow ] [, lAbsRefIniCol ] [, lAbsRefEndRow ] [, lAbsRefEndCol] )
+
+
+* Funct. Math.
+
+  _ABS( Number )
+  _INTE( Number )
+  _MOD( Dividend, Divisor )
+  _ROUND( Number, Decimals )
+  _SIGN( Number )
+
+  _SQRT( Number )
+  _EXP( Number )
+  _LN( Number )
+  _LOG( Number )
+
+  _PI()
+  _RANDOM()
+
+  _SIN( Angle )
+  _COS( Angle )
+  _TAN( Angle )
+  _ASIN( Sin )
+  _ACOS( Cos )
+  _ATAN( Tan )
